@@ -64,6 +64,7 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.converter.moshi)
 
     // Coil
     implementation(libs.coil.compose)
@@ -71,7 +72,5 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.dagger.hilt.compiler)
-
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 }

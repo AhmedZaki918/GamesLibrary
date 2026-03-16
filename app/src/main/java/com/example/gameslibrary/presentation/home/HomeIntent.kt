@@ -1,7 +1,7 @@
 package com.example.gameslibrary.presentation.home
 
 sealed class HomeIntent {
-    data class OnCategoryClicked(
-        val id: Int
+    data class OnGenreClicked(
+        val id: Int?
     ) : HomeIntent()
 }

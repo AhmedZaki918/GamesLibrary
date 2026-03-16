@@ -1,5 +1,7 @@
 package com.example.gameslibrary.data.network
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.gameslibrary.util.BaseResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,7 +27,7 @@ interface SafeApiCall {
                         null
                     )
 
-                    val data = body.data ?: return@withContext Resource.Failure(
+                    val data = body.results ?: return@withContext Resource.Failure(
                         true,
                         response.code(),
                         null,

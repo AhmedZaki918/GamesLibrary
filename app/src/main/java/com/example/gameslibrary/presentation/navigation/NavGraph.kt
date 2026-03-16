@@ -17,7 +17,7 @@ fun NavGraph(
         startDestination = Screen.HOME_SCREEN.route
     ) {
         composable(route = Screen.HOME_SCREEN.route) {
-            HomeScreen(navController)
+            HomeScreen(navController = navController)
         }
 
         composable(route = Screen.DETAILS_SCREEN.route) {

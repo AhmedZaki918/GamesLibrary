@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">GamesLibrary</string>
     <string name="something_went_wrong">Something went wrong!!</string>
+    <string name="game_poster_accessibility">game poster</string>
+    <string name="rate">Rate:</string>
+    <string name="released">Released:</string>
 </resources>

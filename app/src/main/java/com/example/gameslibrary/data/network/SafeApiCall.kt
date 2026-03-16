@@ -1,7 +1,5 @@
 package com.example.gameslibrary.data.network
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.example.gameslibrary.util.BaseResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

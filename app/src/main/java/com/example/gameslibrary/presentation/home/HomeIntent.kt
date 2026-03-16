@@ -4,4 +4,6 @@ sealed class HomeIntent {
     data class OnGenreClicked(
         val id: Int?
     ) : HomeIntent()
+
+    object RetryRequest : HomeIntent()
 }

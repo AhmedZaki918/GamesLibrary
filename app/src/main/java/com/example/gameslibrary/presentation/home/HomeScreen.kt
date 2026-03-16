@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -12,11 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.gameslibrary.data.model.GenresDto
+import com.example.gameslibrary.data.model.games.GamesDto
+import com.example.gameslibrary.data.model.genres.GenresDto
 import com.example.gameslibrary.ui.theme.LightBlack
 import com.example.gameslibrary.util.ErrorUi
 import com.example.gameslibrary.util.LoadingIndicator
@@ -29,7 +30,6 @@ fun HomeScreen(
     navController: NavHostController
 ) {
     val uiState = viewModel.uiState.collectAsState().value
-    val context = LocalContext.current
 
     LazyColumn(
         modifier = Modifier
@@ -38,15 +38,20 @@ fun HomeScreen(
             .padding(bottom = 70.dp)
     ) {
 
-        when (uiState.homeState) {
+        when (uiState.genreState) {
             RequestState.SUCCESS -> {
-                homeCategories(
+                genres(
                     uiState.genresResponse,
                     onItemClicked = { id ->
                         viewModel.onIntent(
                             HomeIntent.OnGenreClicked(id)
                         )
                     })
+
+                gamesByGenre(
+                    uiState.gamesResponse,
+                    onItemClicked = {}
+                )
             }
 
             RequestState.LOADING -> {
@@ -54,7 +59,13 @@ fun HomeScreen(
             }
 
             RequestState.ERROR -> {
-                item { ErrorUi() }
+                item {
+                    ErrorUi(
+                        onRetry = {
+                            viewModel.onIntent(HomeIntent.RetryRequest)
+                        }
+                    )
+                }
             }
 
             else -> Unit
@@ -63,17 +74,19 @@ fun HomeScreen(
 }
 
 
-fun LazyListScope.homeCategories(
+fun LazyListScope.genres(
     genres: List<GenresDto>,
     onItemClicked: (Int?) -> Unit
 ) {
     item {
         LazyRow(
-            modifier = Modifier.padding(top = 50.dp),
+            modifier = Modifier
+                .padding(top = 50.dp)
+                .fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(genres) { item ->
+            items(genres.take(5)) { item ->
                 ListItemCategory(
                     currentItem = item,
                     onCategoryClicked = { id ->
@@ -82,5 +95,20 @@ fun LazyListScope.homeCategories(
                 )
             }
         }
+    }
+}
+
+
+fun LazyListScope.gamesByGenre(
+    games: List<GamesDto>,
+    onItemClicked: () -> Unit
+) {
+    items(games) { game ->
+        ListItemGame(
+            game,
+            onItemClicked = {
+                onItemClicked()
+            }
+        )
     }
 }

@@ -1,5 +1,6 @@
-package com.example.gameslibrary.data.model
+package com.example.gameslibrary.data.model.genres
 
+import com.example.gameslibrary.data.model.genres.Game
 import com.squareup.moshi.Json
 
 data class GenresDto(

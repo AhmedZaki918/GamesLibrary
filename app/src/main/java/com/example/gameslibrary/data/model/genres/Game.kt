@@ -1,4 +1,4 @@
-package com.example.gameslibrary.data.model
+package com.example.gameslibrary.data.model.genres
 
 data class Game(
     val added: Int? = null,

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gameslibrary.data.model.GenresDto
+import com.example.gameslibrary.data.model.genres.GenresDto
 import com.example.gameslibrary.ui.theme.Purple80
 
 @Composable

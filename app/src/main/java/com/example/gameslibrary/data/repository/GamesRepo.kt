@@ -1,8 +1,14 @@
 package com.example.gameslibrary.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.gameslibrary.data.model.games.GamesResults
 import com.example.gameslibrary.data.network.APIService
 import com.example.gameslibrary.data.network.SafeApiCall
+import com.example.gameslibrary.data.pagination.GamesPagingSource
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class GamesRepo @Inject constructor(
     private val api: APIService
@@ -12,8 +18,14 @@ class GamesRepo @Inject constructor(
         api.genres()
     }
 
-    suspend fun getAllGames(genreId: String) = safeApiCall {
-        api.gamesByGenre(genre = genreId)
+    fun getGames(genreId: String): Flow<PagingData<GamesResults>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = { GamesPagingSource(api, genreId) }
+        ).flow
     }
 
     suspend fun getGameDetails(gameId: String) = safeApiCall {

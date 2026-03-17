@@ -1,15 +1,20 @@
 package com.example.gameslibrary.presentation.home
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.gameslibrary.data.model.games.GamesResults
 import com.example.gameslibrary.data.network.Resource
 import com.example.gameslibrary.data.repository.GamesRepo
 import com.example.gameslibrary.util.BaseViewModel
 import com.example.gameslibrary.util.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,6 +25,9 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    private var _gamesFlow: Flow<PagingData<GamesResults>> = flowOf(PagingData.empty())
+    val gamesFlow: Flow<PagingData<GamesResults>> get() = _gamesFlow
 
     init {
         displayGenres()
@@ -43,7 +51,8 @@ class HomeViewModel @Inject constructor(
             if (response is Resource.Success) {
                 _uiState.update {
                     it.copy(
-                        genresResponse = response.data
+                        genresResponse = response.data,
+                        genreState = RequestState.SUCCESS
                     )
                 }
                 setFirstGenreSelected()
@@ -61,26 +70,8 @@ class HomeViewModel @Inject constructor(
 
 
     private fun displayGamesByGenre(genreId: Int?) {
-        viewModelScope.launch {
-            initLoading()
-            val response = repo.getAllGames(genreId.toString())
-
-            if (response is Resource.Success) {
-                _uiState.update {
-                    it.copy(
-                        gamesResponse = response.data,
-                        genreState = RequestState.SUCCESS
-                    )
-                }
-
-            } else {
-                _uiState.update {
-                    it.copy(
-                        genreState = RequestState.ERROR
-                    )
-                }
-            }
-        }
+        _gamesFlow = repo.getGames(genreId.toString())
+            .cachedIn(viewModelScope)
     }
 
 

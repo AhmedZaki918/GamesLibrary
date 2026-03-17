@@ -18,7 +18,8 @@ interface APIService {
     @GET("games")
     suspend fun gamesByGenre(
         @Query("key") key: String = API_KEY,
-        @Query("page_size") pageSize: Int = 30,
+        @Query("page_size") pageSize: Int = 20,
+        @Query("page") page: Int,
         @Query("genres") genre: String
     ): GamesDto
 

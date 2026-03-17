@@ -15,12 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gameslibrary.data.model.genres.GenresDto
+import com.example.gameslibrary.data.model.genres.Results
+import com.example.gameslibrary.ui.theme.MEDIUM_MARGIN
 import com.example.gameslibrary.ui.theme.Purple80
+import com.example.gameslibrary.ui.theme.SMALL_MARGIN
+import com.example.gameslibrary.ui.theme.VERY_SMALL_MARGIN
 
 @Composable
 fun ListItemCategory(
-    currentItem: GenresDto,
+    currentItem: Results,
     onCategoryClicked: (Int?) -> Unit
 ) {
     Box(
@@ -31,7 +34,7 @@ fun ListItemCategory(
                 width = 0.5.dp,
                 color = if (currentItem.isClicked) Purple80
                 else Gray.copy(alpha = 0.7f),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(SMALL_MARGIN)
             )
             .clickable {
                 onCategoryClicked(currentItem.id)
@@ -41,7 +44,7 @@ fun ListItemCategory(
         Text(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(vertical = 4.dp, horizontal = 16.dp),
+                .padding(vertical = VERY_SMALL_MARGIN, horizontal = MEDIUM_MARGIN),
             text = currentItem.name.toString(),
             color = if (currentItem.isClicked) Purple80
             else androidx.compose.ui.graphics.Color.White.copy(alpha = 0.8f),

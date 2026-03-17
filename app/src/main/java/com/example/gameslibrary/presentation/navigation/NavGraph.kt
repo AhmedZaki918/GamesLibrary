@@ -2,8 +2,11 @@ package com.example.gameslibrary.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.gameslibrary.data.local.Constants.GAME_ID
 import com.example.gameslibrary.presentation.details.DetailsScreen
 import com.example.gameslibrary.presentation.home.HomeScreen
 
@@ -20,8 +23,15 @@ fun NavGraph(
             HomeScreen(navController = navController)
         }
 
-        composable(route = Screen.DETAILS_SCREEN.route) {
-            DetailsScreen(navController)
+        composable(
+            route = "${Screen.DETAILS_SCREEN.route}/{$GAME_ID}",
+            arguments = listOf(
+                navArgument(GAME_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            DetailsScreen(navController = navController)
         }
     }
 }

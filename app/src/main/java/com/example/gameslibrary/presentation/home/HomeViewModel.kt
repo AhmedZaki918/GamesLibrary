@@ -91,14 +91,16 @@ class HomeViewModel @Inject constructor(
 
             _uiState.update {
                 it.copy(
-                    genresResponse = it.genresResponse.mapIndexed { index, item ->
-                        if (index == 0) {
-                            genreId = item.id
-                            item.copy(isClicked = true)
-                        } else {
-                            item.copy(isClicked = false)
+                    genresResponse = it.genresResponse.copy(
+                        results = it.genresResponse.results.mapIndexed { index, item ->
+                            if (index == 0) {
+                                genreId = item.id
+                                item.copy(isClicked = true)
+                            } else {
+                                item.copy(isClicked = false)
+                            }
                         }
-                    },
+                    ),
                     genreIdAtSelectedIndex = genreId
                 )
             }
@@ -110,17 +112,18 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
-                    genresResponse = it.genresResponse.map { genre ->
-                        if (genre.id == genreId) {
-                            genre.copy(isClicked = true)
-                        } else {
-                            genre.copy(isClicked = false)
+                    genresResponse = it.genresResponse.copy(
+                        results = it.genresResponse.results.map { genre ->
+                            genre.copy(
+                                isClicked = genre.id == genreId
+                            )
                         }
-                    }
+                    )
                 )
             }
         }
     }
+
 
     private fun initLoading() {
         // We do "if check" to avoid trigger loading state multiple times

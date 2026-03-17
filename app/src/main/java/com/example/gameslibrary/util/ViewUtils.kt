@@ -1,6 +1,7 @@
 package com.example.gameslibrary.util
 
 import android.app.Activity
+import android.text.Html
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -106,4 +107,11 @@ fun ErrorUi(onRetry: () -> Unit) {
             )
         )
     }
+}
+
+fun formatText(text: String): String {
+    return Html.fromHtml(
+        text,
+        Html.FROM_HTML_MODE_LEGACY
+    ).toString()
 }

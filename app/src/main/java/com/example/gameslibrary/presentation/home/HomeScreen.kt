@@ -17,8 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.gameslibrary.data.model.games.GamesDto
+import com.example.gameslibrary.data.model.games.GamesResults
 import com.example.gameslibrary.data.model.genres.GenresDto
+import com.example.gameslibrary.data.model.genres.Results
+import com.example.gameslibrary.presentation.navigation.Screen
+import com.example.gameslibrary.ui.theme.LARGE_MARGIN
 import com.example.gameslibrary.ui.theme.LightBlack
+import com.example.gameslibrary.ui.theme.MEDIUM_MARGIN
 import com.example.gameslibrary.util.ErrorUi
 import com.example.gameslibrary.util.LoadingIndicator
 import com.example.gameslibrary.util.RequestState
@@ -41,7 +46,7 @@ fun HomeScreen(
         when (uiState.genreState) {
             RequestState.SUCCESS -> {
                 genres(
-                    uiState.genresResponse,
+                    uiState.genresResponse.results,
                     onItemClicked = { id ->
                         viewModel.onIntent(
                             HomeIntent.OnGenreClicked(id)
@@ -49,8 +54,12 @@ fun HomeScreen(
                     })
 
                 gamesByGenre(
-                    uiState.gamesResponse,
-                    onItemClicked = {}
+                    uiState.gamesResponse.results,
+                    onItemClicked = { slug ->
+                        navController.navigate(
+                            "${Screen.DETAILS_SCREEN.route}/${slug}"
+                        )
+                    }
                 )
             }
 
@@ -75,7 +84,7 @@ fun HomeScreen(
 
 
 fun LazyListScope.genres(
-    genres: List<GenresDto>,
+    genres: List<Results>,
     onItemClicked: (Int?) -> Unit
 ) {
     item {
@@ -83,8 +92,8 @@ fun LazyListScope.genres(
             modifier = Modifier
                 .padding(top = 50.dp)
                 .fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            contentPadding = PaddingValues(horizontal = MEDIUM_MARGIN),
+            horizontalArrangement = Arrangement.spacedBy(MEDIUM_MARGIN)
         ) {
             items(genres.take(5)) { item ->
                 ListItemCategory(
@@ -100,14 +109,14 @@ fun LazyListScope.genres(
 
 
 fun LazyListScope.gamesByGenre(
-    games: List<GamesDto>,
-    onItemClicked: () -> Unit
+    games: List<GamesResults>,
+    onItemClicked: (String) -> Unit
 ) {
     items(games) { game ->
         ListItemGame(
             game,
-            onItemClicked = {
-                onItemClicked()
+            onItemClicked = { slug ->
+                onItemClicked(slug)
             }
         )
     }

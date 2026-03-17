@@ -18,22 +18,25 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import com.example.gameslibrary.R
-import com.example.gameslibrary.data.model.games.GamesDto
+import com.example.gameslibrary.data.model.games.GamesResults
+import com.example.gameslibrary.ui.theme.LARGE_MARGIN
 import com.example.gameslibrary.ui.theme.LightBlack
+import com.example.gameslibrary.ui.theme.MEDIUM_MARGIN
+import com.example.gameslibrary.ui.theme.SMALL_MARGIN
 
 
 @Composable
 fun ListItemGame(
-    currentItem: GamesDto,
-    onItemClicked: () -> Unit
+    currentItem: GamesResults,
+    onItemClicked: (String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
             .background(LightBlack)
             .wrapContentHeight()
             .fillMaxWidth()
-            .clickable() {
-                onItemClicked()
+            .clickable {
+                onItemClicked(currentItem.slug.toString())
             }
     ) {
 
@@ -45,11 +48,11 @@ fun ListItemGame(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .constrainAs(posterImage) {
-                    top.linkTo(parent.top, 32.dp)
-                    start.linkTo(parent.start, 16.dp)
+                    top.linkTo(parent.top, LARGE_MARGIN)
+                    start.linkTo(parent.start, MEDIUM_MARGIN)
                 }
                 .size(55.dp)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(SMALL_MARGIN))
         )
 
 
@@ -57,7 +60,7 @@ fun ListItemGame(
             modifier = Modifier
                 .constrainAs(titleText) {
                     top.linkTo(posterImage.top)
-                    start.linkTo(posterImage.end, 16.dp)
+                    start.linkTo(posterImage.end, MEDIUM_MARGIN)
                 }
                 .fillMaxWidth(0.7f),
             maxLines = 1,
@@ -70,7 +73,7 @@ fun ListItemGame(
         Text(
             modifier = Modifier.constrainAs(rateText) {
                 top.linkTo(titleText.bottom)
-                start.linkTo(posterImage.end, 16.dp)
+                start.linkTo(posterImage.end, MEDIUM_MARGIN)
             },
             text = "${stringResource(R.string.rate)} ${currentItem.rating}",
             fontSize = 12.sp,
@@ -81,7 +84,7 @@ fun ListItemGame(
         Text(
             modifier = Modifier.constrainAs(releaseDateText) {
                 top.linkTo(rateText.bottom)
-                start.linkTo(posterImage.end, 16.dp)
+                start.linkTo(posterImage.end, MEDIUM_MARGIN)
             },
             fontSize = 12.sp,
             lineHeight = 16.sp,

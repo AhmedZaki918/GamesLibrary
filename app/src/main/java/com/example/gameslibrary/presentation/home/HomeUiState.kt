@@ -6,7 +6,7 @@ import com.example.gameslibrary.util.RequestState
 
 data class HomeUiState(
     val genreState: RequestState = RequestState.IDLE,
-    val genresResponse: List<GenresDto> = emptyList(),
-    val gamesResponse: List<GamesDto> = emptyList(),
+    val genresResponse: GenresDto = GenresDto(),
+    val gamesResponse: GamesDto = GamesDto(),
     val genreIdAtSelectedIndex : Int? = 0
 )

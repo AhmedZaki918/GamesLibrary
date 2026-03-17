@@ -4,4 +4,7 @@
     <string name="game_poster_accessibility">game poster</string>
     <string name="rate">Rate:</string>
     <string name="released">Released:</string>
+    <string name="details">Details</string>
+    <string name="back_accessibility">Back</string>
+    <string name="overview">Overview</string>
 </resources>

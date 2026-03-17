@@ -12,7 +12,11 @@ class GamesRepo @Inject constructor(
         api.genres()
     }
 
-    suspend fun getAllGames(genreId : String) = safeApiCall {
+    suspend fun getAllGames(genreId: String) = safeApiCall {
         api.gamesByGenre(genre = genreId)
+    }
+
+    suspend fun getGameDetails(gameId: String) = safeApiCall {
+        api.gameDetails(gameId = gameId)
     }
 }
